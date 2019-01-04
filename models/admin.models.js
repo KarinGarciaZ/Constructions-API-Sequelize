@@ -1,6 +1,20 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../db_config/mysql-connection');
 
+/*-----------CREATING MODELS----------- */
+
+const Construction = sequelize.define('construction', {
+  title: Sequelize.STRING,
+  description: Sequelize.STRING(10000),
+  statusConstruction: Sequelize.STRING(20),
+  address: Sequelize.STRING,
+  city: Sequelize.STRING,
+  state: Sequelize.STRING,
+  startDate: Sequelize.DATE,
+  finishDate: Sequelize.DATE,
+  statusItem: Sequelize.INTEGER
+})
+
 const User = sequelize.define('user', {
   username: {
     type: Sequelize.STRING,
@@ -16,12 +30,31 @@ const User = sequelize.define('user', {
   password: Sequelize.STRING,
   statusItem: Sequelize.INTEGER
 });
-User.sync();
+
+const Image = sequelize.define('image', {
+  url: Sequelize.STRING(1000),
+  statusItem: Sequelize.INTEGER
+})
 
 const Type = sequelize.define('type', {
   name: Sequelize.STRING,
   statusItem: Sequelize.INTEGER
 });
-Type.sync();
 
-module.exports = { User, Type };
+
+/*-----------CREATING RELATIONS----------- */
+
+Construction.belongsTo( Type );
+Type.hasMany(Construction);
+Image.belongsTo(Construction);
+Construction.hasMany(Image);
+
+
+/*--GENERETE TABLES AND RELATIONS IF THESE DOESN'T EXIST--*/
+
+sequelize.sync({force:true})
+.then( () => console.log('DATABASE READY TO WORK'))
+.catch( error => console.log('ERROR CONNECTING TO THE DATABASE: --->', error))
+
+
+module.exports = { User, Type, Construction, Image };
