@@ -20,43 +20,43 @@ router
 
 .post( '/', ( req, res ) => {
   const newConstruction = {
-    id: null,
     title: req.body.title,
     description: req.body.description,
-    statu: req.body.statu,
+    statusConstruction: req.body.statusConstruction,
     address: req.body.address,
     city: req.body.city,
     state: req.body.state,
-    start_date: req.body.start_date,
-    finish_date: req.body.finish_date,
-    statusItem: 0,
-    id_type: req.body.id_type
+    startDate: req.body.startDate,
+    finishDate: req.body.finishDate,
+    statusItem: 0
   }
+
+  let idType = req.body.idType;
 
   const newImages = req.body.images;
 
-  return Construction.saveConstructionWithImages( newConstruction, newImages, res, Construction.responseToClient);
+  return Construction.saveConstructionWithImages( newConstruction, newImages, idType, res, Construction.responseToClient);
 
 })
 
 .put( '/:idConstruction', ( req, res ) => {
   const constructionUpdated = {
-    id: req.params.idConstruction,
     title: req.body.title,
     description: req.body.description,
-    statu: req.body.statu,
+    statusConstruction: req.body.statusConstruction,
     address: req.body.address,
     city: req.body.city,
     state: req.body.state,
-    start_date: req.body.start_date,
-    finish_date: req.body.finish_date,
-    statusItem: 0,
-    id_type: req.body.id_type
+    startDate: req.body.startDate,
+    finishDate: req.body.finishDate,
+    typeId: req.body.typeId
   }
+
+  const idConstruction = req.params.idConstruction;
 
   const newImages = req.body.images;
 
-  return Construction.updateConstruction( constructionUpdated, newImages, res, Construction.responseToClient )
+  return Construction.updateConstruction( idConstruction, constructionUpdated, newImages, res, Construction.responseToClient )
 })
 
 .delete( '/:idConstruction', ( req, res ) => {
