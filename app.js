@@ -7,7 +7,7 @@
   const env = require('dotenv');
   env.config();
 
-  const adminRoutes = require('./models/admin');
+  const adminRoutes = require('./models/admin.routes');
 
   app.use(bodyParser.json());
 
