@@ -1,8 +1,6 @@
 const environment = process.env.ENVIRONMENT;
-const host;
-const port;
-
-console.log('holo', environment)
+let host;
+let port;
 
 switch (environment) {
   case 'local':
@@ -15,7 +13,7 @@ switch (environment) {
     break;
 
   default:
-    console-log('None Environment matched.');
+    console.log('None Environment matched.');
     break;
 }
 
