@@ -18,7 +18,7 @@
   const portExpress = process.env.EXPRESS_PORT;
   const hostExpress = process.env.EXPRESS_HOST;
 
-  app.listen(portExpress, hostExpress, () => {
+  app.listen(portExpress, () => {
     console.log(`API ready to get requests...`);
-    console.log('running on host ' + hostExpress + ' port ' + portExpress);
+    console.log('running on port '  + portExpress);
   }); 
