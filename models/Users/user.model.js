@@ -1,7 +1,7 @@
 const User = require('./../admin.models').User;
 
 User.getAllUsers = ( res, cb ) => {
-  User.findAll()
+  User.findAll( { where: { statusItem: 0 } } )
   .then( data => cb( null, res, data, 200 ) )
   .catch( error => cb( error, res ) )
 }
