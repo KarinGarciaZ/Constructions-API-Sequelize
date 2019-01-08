@@ -15,9 +15,9 @@
   
   app.use(adminRoutes);
 
-  const portExpress = process.env.PORT || 3000;
+  const environmentConfig = require('./enviroments');
 
-  app.listen(portExpress, () => {
+  app.listen(environmentConfig.port, environmentConfig.host, () => {
     console.log(`API ready to get requests...`);
-    console.log('running on port '  + portExpress);
-  }); 
+    console.log('running on port ' + portExpress);
+  });
