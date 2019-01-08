@@ -15,8 +15,7 @@
   
   app.use(adminRoutes);
 
-  const portExpress = process.env.EXPRESS_PORT;
-  const hostExpress = process.env.EXPRESS_HOST;
+  const portExpress = process.env.EXPRESS_PORT || 3000;
 
   app.listen(portExpress, () => {
     console.log(`API ready to get requests...`);
