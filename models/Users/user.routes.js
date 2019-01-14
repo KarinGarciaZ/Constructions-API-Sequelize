@@ -7,9 +7,14 @@ router.get('/', (req, res) => {
   return User.getAllUsers( res, User.responseToClient )
 })
 
-router.get('/:id', (req, res) => {
+router.get('/getById/:id', (req, res) => {
   let id = req.params.id;
   return User.getSingleUser( id, res, User.responseToClient )
+})
+
+router.get('/getByUsername/:username', (req, res) => {
+  let username = req.params.username;
+  return User.getSingleUserByUsername( username, res, User.responseToClient )
 })
 
 router.post('/', ( req, res ) => {

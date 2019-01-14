@@ -12,6 +12,12 @@ User.getSingleUser = ( id, res, cb ) => {
   .catch( error => cb( error, res ) )
 }
 
+User.getSingleUserByUsername = ( user, res, cb ) => {
+  User.findOne( {where: { username: user }} )
+  .then( data => cb( null, res, data, 200 ) )
+  .catch( error => cb( error, res ) )
+}
+
 User.saveNewUser = ( newUser, res, cb ) => {
   User.create(newUser)
   .then( data => cb( null, res, data, 200 ) )
