@@ -12,8 +12,11 @@ User.getSingleUser = ( id, res, cb ) => {
   .catch( error => cb( error, res ) )
 }
 
-User.getSingleUserByUsername = ( user, res, cb ) => {
-  User.findOne( {where: { username: user }} )
+User.getByAuth = ( user, res, cb ) => {
+  User.findOne( { where: { 
+        username: user.username, 
+        password: user.password 
+      } } )
   .then( data => cb( null, res, data, 200 ) )
   .catch( error => cb( error, res ) )
 }
