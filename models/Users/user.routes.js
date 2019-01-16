@@ -36,6 +36,7 @@ router.post('/', ( req, res ) => {
 
 router.put('/', (req, res) => {
   let user = {
+    id: req.body.id,
     username: req.body.username,
     name: req.body.name,
     phoneNumber: req.body.phoneNumber,

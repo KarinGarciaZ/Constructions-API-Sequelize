@@ -28,7 +28,7 @@ User.saveNewUser = ( newUser, res, cb ) => {
 }
 
 User.updateUser = ( user, res, cb ) => {
-  User.update(user, { where: { username: user.username } } )
+  User.update(user, { where: { id: user.id } } )
   .then( data => cb( null, res, data, 200 ) )
   .catch( error => cb( error, res ) )
 }
