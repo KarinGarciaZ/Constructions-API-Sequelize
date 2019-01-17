@@ -1,4 +1,5 @@
 const User = require('./../admin.models').User;
+const bcrypt = require('bcryptjs');
 
 User.getAllUsers = ( res, cb ) => {
   User.findAll( { where: { statusItem: 0 } } )
@@ -13,11 +14,11 @@ User.getSingleUser = ( id, res, cb ) => {
 }
 
 User.getByAuth = ( user, res, cb ) => {
-  User.findOne( { where: { 
-        username: user.username, 
-        password: user.password 
-      } } )
-  .then( data => cb( null, res, data, 200 ) )
+  User.findOne( { where: { username: user.username } } )
+  .then( async data => {
+    let matchPasswords = await bcrypt.compare( user.password, data.password )
+    matchPasswords ? cb( null, res, data, 200 ) : cb( 'Passwords do not match', res );
+  })
   .catch( error => cb( error, res ) )
 }
 

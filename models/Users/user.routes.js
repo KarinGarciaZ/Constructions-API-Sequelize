@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const bcrypt = require('bcryptjs');
 
 const User = require('./user.model');
 
@@ -17,17 +18,18 @@ router.post('/getByAuth', (req, res) => {
     username: req.body.username,
     password: req.body.password
   }
-  console.log(user)
   return User.getByAuth( user, res, User.responseToClient )
 })
 
-router.post('/', ( req, res ) => {
+router.post('/', async ( req, res ) => {
+  let password = req.body.password;
+  password = await bcrypt.hash( password, 12 );
   let user = {
     username: req.body.username,
     name: req.body.name,
     email: req.body.email,
     phoneNumber: req.body.phoneNumber,
-    password: req.body.password,
+    password: password,
     statusItem: 0
   }
 
