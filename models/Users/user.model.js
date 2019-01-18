@@ -13,11 +13,15 @@ User.getSingleUser = ( id, res, cb ) => {
   .catch( error => cb( error, res ) )
 }
 
-User.getByAuth = ( user, res, cb ) => {
+User.getByAuth = ( user, req, res, cb ) => {
   User.findOne( { where: { username: user.username } } )
   .then( async data => {
     let matchPasswords = await bcrypt.compare( user.password, data.password )
-    matchPasswords ? cb( null, res, data, 200 ) : cb( 'Passwords do not match', res );
+    if ( matchPasswords ) {
+      req.session.isLoggedIn = true;
+      cb( null, res, data, 200 );
+    } else 
+      cb( 'Passwords do not match', res );
   })
   .catch( error => cb( error, res ) )
 }

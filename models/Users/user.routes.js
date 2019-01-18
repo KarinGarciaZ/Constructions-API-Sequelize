@@ -18,7 +18,7 @@ router.post('/getByAuth', (req, res) => {
     username: req.body.username,
     password: req.body.password
   }
-  return User.getByAuth( user, res, User.responseToClient )
+  return User.getByAuth( user, req, res, User.responseToClient )
 })
 
 router.post('/', async ( req, res ) => {
