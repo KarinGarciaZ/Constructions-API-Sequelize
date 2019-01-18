@@ -5,12 +5,13 @@ const Image = require('./Images/image.routes');
 const Construction = require('./Constructions/construction.routes');
 const Type = require('./Types/type.routes');
 const User = require('./Users/user.routes');
+const isAuth = require('../auth');
 
 router.use('/type', Type);
 
 router.use('/construction', Construction);
 
-router.use('/image', Image);
+router.use('/image', isAuth, Image);
 
 router.use('/user', User);
 

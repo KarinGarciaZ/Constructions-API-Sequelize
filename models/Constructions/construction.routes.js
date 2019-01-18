@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Construction = require('./construction.model');
+const isAuth = require('../../auth');
 
 router
 
@@ -18,7 +19,7 @@ router
   return Construction.getAllConstructionsWithImagesAndType( res, Construction.responseToClient );
 } )
 
-.post( '/', ( req, res ) => {
+.post( '/', isAuth, ( req, res ) => {
   const newConstruction = {
     title: req.body.title,
     description: req.body.description,
@@ -39,7 +40,7 @@ router
 
 })
 
-.put( '/:idConstruction', ( req, res ) => {
+.put( '/:idConstruction', isAuth, ( req, res ) => {
   const constructionUpdated = {
     title: req.body.title,
     description: req.body.description,
@@ -59,7 +60,7 @@ router
   return Construction.updateConstruction( idConstruction, constructionUpdated, newImages, res, Construction.responseToClient )
 })
 
-.delete( '/:idConstruction', ( req, res ) => {
+.delete( '/:idConstruction', isAuth, ( req, res ) => {
   let idConstruction = req.params.idConstruction;
   Construction.deleteConstruction( idConstruction, res, Construction.responseToClient );
 } )
