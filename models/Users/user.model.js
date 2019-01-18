@@ -13,13 +13,18 @@ User.getSingleUser = ( id, res, cb ) => {
   .catch( error => cb( error, res ) )
 }
 
+User.logout = ( req, res, cb ) => {
+  req.session.destroy( err => err? cb( err, res ) : cb( null, res, 'loggedout', 200 ))
+}
+
 User.getByAuth = ( user, req, res, cb ) => {
   User.findOne( { where: { username: user.username } } )
   .then( async data => {
     let matchPasswords = await bcrypt.compare( user.password, data.password )
     if ( matchPasswords ) {
       req.session.isLoggedIn = true;
-      cb( null, res, data, 200 );
+      req.session.user = data;
+      req.session.save( err => err? cb( err, res ) : cb( null, res, data, 200 ))
     } else 
       cb( 'Passwords do not match', res );
   })
