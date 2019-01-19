@@ -1,5 +1,6 @@
 const User = require('./../admin.models').User;
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 User.getAllUsers = ( res, cb ) => {
   User.findAll( { where: { statusItem: 0 } } )
@@ -22,9 +23,13 @@ User.getByAuth = ( user, req, res, cb ) => {
   .then( async data => {
     let matchPasswords = await bcrypt.compare( user.password, data.password )
     if ( matchPasswords ) {
-      req.session.isLoggedIn = true;
-      req.session.user = data;
-      req.session.save( err => err? cb( err, res ) : cb( null, res, data, 200 ))
+      jwt.sign({user: data}, process.env.SECRET_KEY, ( err, token ) => {
+        let resp = { data, token }
+        err? cb( err, res ) : cb( null, res, resp, 200 )
+      })
+      // req.session.isLoggedIn = true;
+      // req.session.user = data;
+      // req.session.save( err => err? cb( err, res ) : cb( null, res, data, 200 ))
     } else 
       cb( 'Passwords do not match', res );
   })
