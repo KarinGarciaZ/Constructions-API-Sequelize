@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Type = require('./type.model');
-const isAuth = require('../../auth');
+const isAuth = require('../../auth/userAuth');
 
 router
 .get( '/', ( req, res ) => {

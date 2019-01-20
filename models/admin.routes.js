@@ -5,7 +5,7 @@ const Image = require('./Images/image.routes');
 const Construction = require('./Constructions/construction.routes');
 const Type = require('./Types/type.routes');
 const User = require('./Users/user.routes');
-const isAuth = require('../auth');
+const isAuth = require('../auth/userAuth');
 
 router.use('/type', Type);
 

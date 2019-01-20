@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Construction = require('./construction.model');
-const isAuth = require('../../auth');
+const isAuth = require('../../auth/userAuth');
 
 router
 
