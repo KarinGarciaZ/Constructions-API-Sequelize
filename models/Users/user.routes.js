@@ -3,27 +3,15 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 
 const User = require('./user.model');
-const isAuth = require('../../auth');
+const isAuth = require('../../auth/userAuth');
 
 router.get('/getById/:id', isAuth, (req, res) => {
   let id = req.params.id;
   return User.getSingleUser( id, res, User.responseToClient )
 })
 
-router.get('/logout', isAuth, (req, res) => {
-  return User.logout( req, res, User.responseToClient )
-})
-
 router.get('/', isAuth, (req, res) => {
   return User.getAllUsers( res, User.responseToClient )
-})
-
-router.post('/getByAuth', (req, res) => {
-  let user = {
-    username: req.body.username,
-    password: req.body.password
-  }
-  return User.getByAuth( user, req, res, User.responseToClient )
 })
 
 router.post('/', isAuth, async ( req, res ) => {
