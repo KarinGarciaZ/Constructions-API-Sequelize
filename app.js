@@ -9,7 +9,7 @@
 
   app.use(bodyParser.json());
 
-  app.use(cors({ origin:true, credentials: true }));
+  app.use(cors());
 
   const Authentication = require('./models/Authentication/authentication.routes');
   app.use('/auth', Authentication)
