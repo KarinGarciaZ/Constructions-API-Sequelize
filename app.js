@@ -24,9 +24,9 @@
   //   next();
   // })
 
-  //app.use(cors( {origin: '*', methods: 'GET, POST, PUT, DELETE, OPTIONS', allowedHeaders: 'Content-Type, Authorization'} ));
+  app.use(cors( {credentials: true,  origin: '*', methods: 'GET, POST, PUT, DELETE, OPTIONS', allowedHeaders: 'Content-Type, Authorization'} ));
 
-  app.use( cors({ credentials: true, origin: true }) )
+  //app.use( cors({ credentials: true, origin: true }) )
 
   const Authentication = require('./models/Authentication/authentication.routes');
   app.use('/auth', Authentication)
