@@ -9,6 +9,9 @@ Auth.getUserByToken = ( req, res, cb ) => {
   if ( typeof(token) === 'undefined' ) 
     return cb( 'No credentials to get into system', res );
 
+  let bearer = token.split(' ');
+  token = bearer[1];
+
   jwt.verify( token, process.env.SECRET_KEY, ( err, info) => {
     if(err) return cb( 'No credentials to get into system', res );
     if( info.userId ) {
