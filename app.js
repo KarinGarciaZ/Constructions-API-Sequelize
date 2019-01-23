@@ -9,22 +9,24 @@
 
   app.use(bodyParser.json());
 
-  app.use( ( req, res, next ) => {
-    console.log(req.headers['authorization'])
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Headers', 'Authorization, Content-Type');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE')
-    next();
-  })
+  // app.use( ( req, res, next ) => {
+  //   console.log(req.headers['authorization'])
+  //   res.setHeader('Access-Control-Allow-Origin', '*');
+  //   res.setHeader('Access-Control-Allow-Headers', 'Authorization, Content-Type');
+  //   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE')
+  //   next();
+  // })
 
-  app.use( ( req, res, next ) => {
-    if ( req.method === 'OPTIONS' ) {
-      res.sendStatus(204);
-    }
-    next();
-  })
+  // app.use( ( req, res, next ) => {
+  //   if ( req.method === 'OPTIONS' ) {
+  //     res.sendStatus(204);
+  //   }
+  //   next();
+  // })
 
   //app.use(cors( {origin: '*', methods: 'GET, POST, PUT, DELETE, OPTIONS', allowedHeaders: 'Content-Type, Authorization'} ));
+
+  app.use( cors({ credentials: true, origin: true }) )
 
   const Authentication = require('./models/Authentication/authentication.routes');
   app.use('/auth', Authentication)
