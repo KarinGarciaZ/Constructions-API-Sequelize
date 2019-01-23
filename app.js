@@ -9,7 +9,16 @@
 
   app.use(bodyParser.json());
 
-  app.use(cors( {origin: '*', methods: 'GET, POST, PUT, DELETE, OPTIONS', allowedHeaders: 'Content-Type, Authorization'} ));
+  app.use( ( req, res, next ) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Authorization, Content-Type');
+    if ( req.method === 'OPTIONS' ) {
+      res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE')
+    }
+    next();
+  })
+
+  //app.use(cors( {origin: '*', methods: 'GET, POST, PUT, DELETE, OPTIONS', allowedHeaders: 'Content-Type, Authorization'} ));
 
   const Authentication = require('./models/Authentication/authentication.routes');
   app.use('/auth', Authentication)
