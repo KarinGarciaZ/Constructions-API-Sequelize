@@ -13,8 +13,12 @@
     console.log(req.headers['authorization'])
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Headers', 'Authorization, Content-Type');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE')
+    next();
+  })
+
+  app.use( ( req, res, next ) => {
     if ( req.method === 'OPTIONS' ) {
-      res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE')
       res.sendStatus(204);
     }
     next();
