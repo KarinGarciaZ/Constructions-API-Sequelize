@@ -37,7 +37,10 @@ const Image = sequelize.define('image', {
 })
 
 const Type = sequelize.define('type', {
-  name: Sequelize.STRING,
+  name: {
+    type: Sequelize.STRING,
+    unique: true
+  },
   statusItem: Sequelize.INTEGER
 });
 
