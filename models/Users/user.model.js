@@ -1,5 +1,4 @@
 const User = require('./../admin.models').User;
-const bcrypt = require('bcryptjs');
 
 User.getAllUsers = ( res, cb ) => {
   User.findAll( { where: { statusItem: 0 } } )
