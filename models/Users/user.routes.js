@@ -29,6 +29,17 @@ router.post('/', isAuth, async ( req, res ) => {
   return User.saveNewUser( user, res, User.responseToClient );
 })
 
+router.put('/changePassword', isAuth, ( req, res ) => {
+  let passwords = {
+    currentPassword: req.body.currentPassword,
+    newPassword: req.body.newPassword
+  }
+
+  let userId = req.body.userId;
+
+  return User.changePassword( userId, passwords, res, User.responseToClient );
+})
+
 router.put('/', isAuth, (req, res) => {
   let user = {
     id: req.body.id,
