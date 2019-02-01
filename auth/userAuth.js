@@ -10,7 +10,7 @@ module.exports = ( req, res, next ) => {
 
   jwt.verify( token, process.env.SECRET_KEY, ( err, info) => {
     if(err) return res.status(403).json('You cannot hit this endpoint.');
-    if( info.userId )
+    if( info.userId )//falta verificar si el usuario existe
       next();
     else
       return res.status(403).json('You cannot hit this endpoint.');

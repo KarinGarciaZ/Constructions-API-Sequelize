@@ -5,9 +5,10 @@
   const bodyParser = require('body-parser');
   const cors = require('cors');
   const env = require('dotenv');
+  const formData = require('express-form-data')
   env.config();
 
-  app.use(bodyParser.json());
+  app.use(bodyParser.json({limit: '50mb'}));
 
   // app.use( ( req, res, next ) => {
   //   console.log(req.headers['authorization'])
@@ -27,6 +28,8 @@
   //app.use( cors({ credentials: true, origin: true }) )
 
   app.use(cors( {credentials: true,  origin: '*', methods: 'GET, POST, PUT, DELETE, OPTIONS', allowedHeaders: 'Content-Type, Authorization'} ));
+
+  //app.use(formData.parse());
 
   app.use(require('./default_values/user'));
 
