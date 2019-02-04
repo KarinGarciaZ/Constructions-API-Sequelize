@@ -33,7 +33,8 @@ const User = sequelize.define('user', {
 
 const Image = sequelize.define('image', {
   url: Sequelize.STRING(1000),
-  statusItem: Sequelize.INTEGER
+  statusItem: Sequelize.INTEGER,
+  mainImage: Sequelize.INTEGER
 })
 
 const Type = sequelize.define('type', {

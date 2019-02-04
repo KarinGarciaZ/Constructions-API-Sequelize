@@ -58,7 +58,7 @@ Construction.saveConstructionWithImages = ( newConstruction, images, idType, res
     .then( type => type.createConstruction(newConstruction))
     .then( construction => {
       imagesPromises = images.map( image => {
-        return construction.createImage({url: image, statusItem: 0})
+        return construction.createImage( image )
       }) 
       return Promise.all(imagesPromises);  
     })

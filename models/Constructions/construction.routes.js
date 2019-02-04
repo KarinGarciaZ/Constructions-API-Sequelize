@@ -23,7 +23,6 @@ router
 .post( '/', isAuth, upload, ( req, res ) => {
 
   let constructionData = JSON.parse(req.body.constructionData);
-  console.log(req)
 
   const newConstruction = {
     title: constructionData.title,
@@ -39,7 +38,12 @@ router
 
   let idType = constructionData.idType;
 
-  let newImages = req.files.map( image => image.filename )
+  let newImages = req.files.map( (image, index) => {
+    let mainImage = 0
+    if (index === constructionData.mainImage)
+      mainImage = 1
+    return { url: image.filename, mainImage, statusItem: 0 }
+  })
 
   return Construction.saveConstructionWithImages( newConstruction, newImages, idType, res, Construction.responseToClient);
 
