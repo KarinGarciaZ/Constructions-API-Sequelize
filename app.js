@@ -35,6 +35,8 @@
 
   const Authentication = require('./models/Authentication/authentication.routes');
   app.use('/auth', Authentication)
+
+  app.use(express.static('storage/constructions'));
   
   const adminRoutes = require('./models/admin.routes');
   const isAuth = require('./auth/auth');
