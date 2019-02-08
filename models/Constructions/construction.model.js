@@ -89,7 +89,7 @@ Construction.deleteConstruction = ( idConstruction, res, cb ) => {
     { statusItem: 1 },
     { where: { id: idConstruction } }
   )
-  .then( data => cb(null, res, data, 201))
+  .then( data => cb(null, res, data, 204))
   .catch( error => cb( error, res ) )
 }
 
