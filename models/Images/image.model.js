@@ -8,6 +8,26 @@ Image.getAllImages = ( res, cb ) => {
   .catch( error => cb( error, res ) )
 }
 
+/*------------------------------PUT--------------------------------*/
+
+Image.deleteImages = ( images, res, cb ) => {
+  let promises = images.map(id => {
+    return Image.update({ statusItem: 1 }, { where : { id }})
+  });
+  
+  Promise.all(promises)
+  .then( data => cb(null, res, data, 200))
+  .catch( error => cb( error, res ) )
+}
+
+Image.updateMain = ( constructionId, mainImage ) => {
+  Image.update({ mainImage: 0 }, { where: { constructionId } })
+  .then( () => Image.findAll( { where: { statusItem: 0, constructionId }}))
+  .then( images => {
+    Image.update({ mainImage: 1 }, { where: { id: images[mainImage].dataValues.id }})
+  })
+}
+
 /*------------------------------METHODS--------------------------------*/
 
 Image.responseToClient = ( error, res, data, action ) => {
