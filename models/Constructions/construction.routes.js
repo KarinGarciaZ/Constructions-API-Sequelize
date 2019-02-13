@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Construction = require('./construction.model');
+const Image = require('../Images/image.model');
 const isAuth = require('../../auth/userAuth');
 const upload = require( './multer-configuration' );
 
@@ -49,23 +50,30 @@ router
 
 })
 
-.put( '/:idConstruction', isAuth, ( req, res ) => {
+.put( '/:idConstruction', isAuth, upload, ( req, res ) => {
+
+  let constructionData = JSON.parse(req.body.constructionData);
+
   const constructionUpdated = {
-    title: req.body.title,
-    description: req.body.description,
-    statusConstruction: req.body.statusConstruction,
-    address: req.body.address,
-    city: req.body.city,
-    state: req.body.state,
-    startDate: req.body.startDate,
-    finishDate: req.body.finishDate,
-    typeId: req.body.typeId
+    title: constructionData.title,
+    description: constructionData.description,
+    statusConstruction: constructionData.statusConstruction,
+    address: constructionData.address,
+    city: constructionData.city,
+    state: constructionData.state,
+    startDate: constructionData.startDate,
+    finishDate: constructionData.finishDate,
+    typeId: constructionData.idType
   }
 
   const idConstruction = req.params.idConstruction;
+  let mainImage = constructionData.mainImage
 
-  const newImages = req.body.images;
+  let newImages = req.files.map( (image, index) => {
+    return { url: image.filename, mainImage: 0, statusItem: 0 }
+  })
 
+  Image.updateMain( idConstruction, mainImage )
   return Construction.updateConstruction( idConstruction, constructionUpdated, newImages, res, Construction.responseToClient )
 })
 
