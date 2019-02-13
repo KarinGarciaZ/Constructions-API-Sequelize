@@ -70,14 +70,13 @@ Construction.saveConstructionWithImages = ( newConstruction, images, idType, res
 
 Construction.updateConstruction = ( idConstruction, constructionUpdated, images, res, cb ) => {
   Construction.update( constructionUpdated, { where: { id: idConstruction } } )
-  .then( () => Image.destroy( { where: { constructionId: idConstruction } } ) )
   .then( () => Construction.findByPk( idConstruction ))
   .then( construction => {
     imagesPromises = images.map( image => {
-      return construction.createImage({url: image, statusItem: 0})
+      return construction.createImage(image)
     }) 
     return Promise.all(imagesPromises);  
-  } )
+  } )  
   .then( () => cb(null, res, 'updated', 201))
   .catch( error => cb( error, res ) )
 }
