@@ -26,24 +26,40 @@ User.updateUser = ( user, res, cb ) => {
   .catch( error => cb( error, res ) )
 }
 
-User.changePassword = (userId, passwords, res, cb ) => {
-  User.findOne({ where: { id: userId } })
-  .then( async user => {
-    let matchPasswords = await bcrypt.compare( passwords.currentPassword, user.password )
+User.changePassword = (currentPassword, newPassword, req, res, cb ) => {
+  User.getUserByToken( req, async ( error, user ) => {
+    if( error ) cb(error, res)
+    let matchPasswords = await bcrypt.compare( currentPassword, user.password )
     if ( matchPasswords ) {
-      newPassEncrypted = await bcrypt.hash( passwords.newPassword, 12 );
-      User.update( {password: newPassEncrypted}, { where: {id: userId} } )
+      newPassEncrypted = await bcrypt.hash( newPassword, 12 );
+      User.update( {password: newPassEncrypted}, { where: {id: user.id} } )
       .then( data => cb(null, res, 'updated', 201))
       .catch( error => cb(error, res))
     } else cb('Invalid password', res)
   })
-  .catch( err => cb(err, res))
 }
 
 User.deleteUser = ( idUser, res, cb ) => {
   User.update({ statusItem: 1 }, { where: { id: idUser } })
   .then( data => cb( null, res, data, 200 ) )
   .catch( error => cb( error, res ) )
+}
+
+User.getUserByToken = ( req, cb ) => {
+  let token = req.headers['authorization'];
+  let bearer = token.split(' ');
+  token = bearer[1];
+
+  jwt.verify( token, process.env.SECRET_KEY, ( err, info) => {
+    if(err) return cb( err );
+    if( info.userId ) {
+      User.findOne( { where: { id: info.userId } } )
+      .then( user => cb( null, user ) )
+      .catch( error => cb( error ) )
+    }      
+    else
+      return cb( err );
+  })  
 }
 
 User.responseToClient = ( error, res, data, status ) => {
