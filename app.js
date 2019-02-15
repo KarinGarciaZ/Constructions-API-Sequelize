@@ -27,7 +27,7 @@
 
   //app.use( cors({ credentials: true, origin: true }) )
 
-  app.options('*', cors( {credentials: true,  origin: '*', methods: 'GET, POST, PUT, DELETE, OPTIONS', allowedHeaders: 'Content-Type, Authorization'} ));
+  app.use(cors( {credentials: true,  origin: '*', methods: 'GET, POST, PUT, DELETE, OPTIONS', allowedHeaders: 'Content-Type, Authorization'} ));
 
   //app.use(formData.parse());
 
