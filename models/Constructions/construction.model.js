@@ -30,7 +30,11 @@ Construction.getConstructionWidthImagesAndType = ( idConstruction, res, cb ) => 
     ],
     where: [{ id: idConstruction }, { statusItem: 0 }]
   })
-  .then( data => cb(null, res, data, 200))
+  .then( data => {
+    if( data )
+      return cb(null, res, data, 200)
+    return cb('Construction does not exists', res)
+  })    
   .catch( error => cb( error, res ) )
 }
 
