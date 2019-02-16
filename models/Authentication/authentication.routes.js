@@ -7,6 +7,12 @@ router.get('/getUserByToken', (req, res) => {
   Auth.getUserByToken( req, res, Auth.responseToClient )
 })
 
+router.post('/resetPassword', ( req, res ) => {
+  let email = req.body.email;
+
+  return Auth.resetPassword( email, res, Auth.responseToClient );
+})
+
 router.post('/login', (req, res) => {
   let user = {
     username: req.body.username,

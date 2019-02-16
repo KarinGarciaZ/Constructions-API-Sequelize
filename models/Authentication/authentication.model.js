@@ -43,6 +43,16 @@ Auth.login = ( user, res, cb ) => {
   .catch( error => cb( error, res ) )
 }
 
+Auth.resetPassword = ( email, res, cb ) => {
+  User.findOne( { where: { email } } )
+  .then( user => {
+    if( user ) {
+      return cb( null , res, user, 200)
+    } else return cb( 'Invalid email', res )
+  })
+  .catch( error => cb( error, res ) )
+}
+
 Auth.responseToClient = ( error, res, data, status ) => {
   if ( error )
     res.status(500).json(error);
