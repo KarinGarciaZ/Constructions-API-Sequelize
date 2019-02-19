@@ -45,6 +45,11 @@ const Type = sequelize.define('type', {
   statusItem: Sequelize.INTEGER
 });
 
+const Code = sequelize.define('code', { 
+  statusItem: Sequelize.INTEGER,
+  code: Sequelize.INTEGER
+})
+
 
 /*-----------CREATING RELATIONS----------- */
 
@@ -52,6 +57,8 @@ Construction.belongsTo( Type );
 Type.hasMany(Construction);
 Image.belongsTo(Construction);
 Construction.hasMany(Image);
+Code.belongsTo(User);
+User.hasMany(Code);
 
 
 /*--GENERETE TABLES AND RELATIONS IF THESE DOESN'T EXIST--*/
@@ -61,4 +68,4 @@ sequelize.sync()
 .catch( error => console.log('ERROR CONNECTING TO THE DATABASE: --->', error))
 
 
-module.exports = { User, Type, Construction, Image };
+module.exports = { User, Type, Construction, Image, Code };
