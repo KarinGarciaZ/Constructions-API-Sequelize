@@ -36,6 +36,9 @@
   const Authentication = require('./models/Authentication/authentication.routes');
   app.use('/auth', Authentication)
 
+  const ResetCode = require('./models/ResetCode/resetCode.routes');
+  app.use('/reset', ResetCode)
+
   app.use(express.static('storage/constructions'));
   
   const adminRoutes = require('./models/admin.routes');
