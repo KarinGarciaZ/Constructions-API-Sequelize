@@ -1,7 +1,6 @@
 const User = require('../admin.models').User;
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-
 const Auth = {};
 
 Auth.getUserByToken = ( req, res, cb ) => {
@@ -39,16 +38,6 @@ Auth.login = ( user, res, cb ) => {
       })      
     } else 
       cb( 'Passwords do not match', res );
-  })
-  .catch( error => cb( error, res ) )
-}
-
-Auth.resetPassword = ( email, res, cb ) => {
-  User.findOne( { where: { email } } )
-  .then( user => {
-    if( user ) {
-      return cb( null , res, user, 200)
-    } else return cb( 'Invalid email', res )
   })
   .catch( error => cb( error, res ) )
 }
