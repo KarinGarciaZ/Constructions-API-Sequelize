@@ -2,6 +2,7 @@ const User = require('../admin.models').User;
 const Code = require('../admin.models').Code;
 const nodeMailer = require('nodemailer');
 const sendGridTransport = require('nodemailer-sendgrid-transport');
+const bcrypt = require('bcryptjs');
 
 const transporter = nodeMailer.createTransport(sendGridTransport({
   auth: {
@@ -10,7 +11,7 @@ const transporter = nodeMailer.createTransport(sendGridTransport({
 }))
 const ResetCode = {};
 
-ResetCode.resetPassword = ( email, res, cb ) => {
+ResetCode.sendEmail = ( email, res, cb ) => {
   User.findOne( { where: { email } } )
   .then( user => {
     if( user ) {
@@ -21,9 +22,10 @@ ResetCode.resetPassword = ( email, res, cb ) => {
   .catch( error => cb( error, res ) )
 }
 
-ResetCode.sendResetEmail = ( email, user ) => {
+ResetCode.sendResetEmail = async ( email, user ) => {
   let code = (Math.random() * 10000)
-  code = Math.round(code)
+  code = Math.round(code)  
+  await Code.update( { statusItem: 1 }, { where: { userId: user.id } } )
   user.createCode( { statusItem: 0, code } )
   .then( () => {
     transporter.sendMail({
@@ -33,6 +35,23 @@ ResetCode.sendResetEmail = ( email, user ) => {
       html:`<p>${code}</p>`
     })
   })
+}
+
+ResetCode.verifyCode = (code, userId, newPassword, res, cb) => {
+  Code.findOne( { where: { userId, code, statusItem: 0 } } )
+  .then( cod => {
+    if( cod ) {
+      Code.update( { statusItem: 1 }, { where: { userId } } )
+      ResetCode.changePassword( userId, newPassword )
+      return cb( null, res, {}, 200 )
+    } else return cb( 'invalid code.', res )
+  })
+  .catch( error => cb( error, res ) ) 
+}
+
+ResetCode.changePassword = async ( userId, newPassword ) => {  
+  let newPassEncrypted = await bcrypt.hash( newPassword, 12 );
+  User.update( {password: newPassEncrypted}, { where: {id: userId} } )    
 }
 
 ResetCode.responseToClient = ( error, res, data, status ) => {
