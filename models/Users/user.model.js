@@ -20,10 +20,13 @@ User.saveNewUser = ( newUser, res, cb ) => {
   .catch( error => cb( error, res ) )
 }
 
-User.updateUser = ( user, res, cb ) => {
-  User.update(user, { where: { id: user.id } } )
-  .then( data => cb( null, res, data, 200 ) )
-  .catch( error => cb( error, res ) )
+User.updateUser = ( user, req, res, cb ) => {
+  User.getUserByToken( req, ( error, userResp ) => {
+    if( error ) cb(error, res)
+    User.update(user, { where: { id: userResp.id } } )
+    .then( data => cb( null, res, data, 200 ) )
+    .catch( error => cb( error, res ) )
+  })
 }
 
 User.changePassword = (currentPassword, newPassword, req, res, cb ) => {
