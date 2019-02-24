@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Construction = require('./construction.model');
 const Image = require('../Images/image.model');
-const isAuth = require('../../auth/userAuth');
+const userAuth = require('../../auth/userAuth');
 const upload = require( './multer-configuration' );
 
 router
@@ -21,7 +21,7 @@ router
   return Construction.getAllConstructionsWithImagesAndType( res, Construction.responseToClient );
 } )
 
-.post( '/', isAuth, upload, ( req, res ) => {
+.post( '/', userAuth, upload, ( req, res ) => {
 
   let constructionData = JSON.parse(req.body.constructionData);
 
@@ -50,7 +50,7 @@ router
 
 })
 
-.put( '/:idConstruction', isAuth, upload, ( req, res ) => {
+.put( '/:idConstruction', userAuth, upload, ( req, res ) => {
 
   let constructionData = JSON.parse(req.body.constructionData);
 
@@ -77,7 +77,7 @@ router
   return Construction.updateConstruction( idConstruction, constructionUpdated, newImages, res, Construction.responseToClient )
 })
 
-.delete( '/:idConstruction', isAuth, ( req, res ) => {
+.delete( '/:idConstruction', userAuth, ( req, res ) => {
   let idConstruction = req.params.idConstruction;
   Construction.deleteConstruction( idConstruction, res, Construction.responseToClient );
 } )

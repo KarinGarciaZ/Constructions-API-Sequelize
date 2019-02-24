@@ -3,18 +3,17 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 
 const User = require('./user.model');
-const isAuth = require('../../auth/userAuth');
 
-router.get('/getById/:id', isAuth, (req, res) => {
+router.get('/getById/:id', (req, res) => {
   let id = req.params.id;
   return User.getSingleUser( id, res, User.responseToClient )
 })
 
-router.get('/', isAuth, (req, res) => {
+router.get('/', (req, res) => {
   return User.getAllUsers( res, User.responseToClient )
 })
 
-router.post('/', isAuth, async ( req, res ) => {
+router.post('/', async ( req, res ) => {
   let password = req.body.password;
   password = await bcrypt.hash( password, 12 );
   let user = {
@@ -29,13 +28,13 @@ router.post('/', isAuth, async ( req, res ) => {
   return User.saveNewUser( user, res, User.responseToClient );
 })
 
-router.put('/changePassword', isAuth, ( req, res ) => {  
+router.put('/changePassword', ( req, res ) => {  
   let newPassword = req.body.newPassword;
   let currentPassword = req.body.currentPassword;
   return User.changePassword( currentPassword, newPassword, req, res, User.responseToClient );
 })
 
-router.put('/', isAuth, (req, res) => {
+router.put('/', (req, res) => {
   let user = {
     id: req.body.id,
     username: req.body.username,
@@ -44,10 +43,10 @@ router.put('/', isAuth, (req, res) => {
     email: req.body.email
   }
 
-  return User.updateUser( user, res, User.responseToClient );
+  return User.updateUser( user, req, res, User.responseToClient );
 })
 
-router.delete('/:id', isAuth, (req, res) => {
+router.delete('/:id', (req, res) => {
   let id = req.params.id;
   return User.deleteUser( id, res, User.responseToClient );
 })

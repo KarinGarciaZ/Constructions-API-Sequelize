@@ -1,19 +1,29 @@
 const express = require('express');
 const router = express.Router();
 
-const Image = require('./Images/image.routes');
-const Construction = require('./Constructions/construction.routes');
+const userAuth = require('../auth/userAuth');
+const isAuth = require('../auth/auth');
+
+const Authentication = require('./Authentication/authentication.routes');
+const ResetCode = require('./ResetCode/resetCode.routes');
 const Type = require('./Types/type.routes');
+const Construction = require('./Constructions/construction.routes');
+const Image = require('./Images/image.routes');
 const User = require('./Users/user.routes');
-const isAuth = require('../auth/userAuth');
 
-router.use('/type', Type);
+router.use('/auth', Authentication)
 
-router.use('/construction', Construction);
+router.use('/reset', ResetCode)
 
-router.use('/image', isAuth, Image);
+router.use('/type', isAuth, Type);
 
-router.use('/user', User);
+router.use('/construction', isAuth, Construction);
+
+router.use('/image', userAuth, Image);
+
+router.use('/user', userAuth, User);
+
+
 
 router.use('/', ( req, res ) => {
   res.status(404).send();

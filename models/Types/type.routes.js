@@ -1,20 +1,20 @@
 const express = require('express');
 const router = express.Router();
 const Type = require('./type.model');
-const isAuth = require('../../auth/userAuth');
+const userAuth = require('../../auth/userAuth');
 
 router
 .get( '/', ( req, res ) => {
   return Type.getAllTypes( res, Type.responseToClient );
 })
 
-.post( '/', isAuth, ( req, res ) => {
+.post( '/', userAuth, ( req, res ) => {
   let newTypeName = req.body.name;
 
   return Type.saveType( newTypeName, res, Type.responseToClient )
 })
 
-.put( '/:idType', isAuth, ( req, res ) => {
+.put( '/:idType', userAuth, ( req, res ) => {
   let type = {
     id: req.params.idType,
     name: req.body.name
