@@ -4,6 +4,10 @@ const nodeMailer = require('nodemailer');
 const sendGridTransport = require('nodemailer-sendgrid-transport');
 const bcrypt = require('bcryptjs');
 
+const mustache   = require('mustache');
+const fs = require('fs');   
+const contentEmail = fs.readFileSync('models/ResetCode/email-reset-password.html',"utf-8");
+
 const transporter = nodeMailer.createTransport(sendGridTransport({
   auth: {
     api_key: process.env.SEND_GRID
@@ -23,16 +27,19 @@ ResetCode.sendEmail = ( email, res, cb ) => {
 }
 
 ResetCode.sendResetEmail = async ( email, user ) => {
-  let code = (Math.random() * 10000)
-  code = Math.round(code)  
+  let code = Math.round(Math.random() * 10000)  
   await Code.update( { statusItem: 1 }, { where: { userId: user.id } } )
   user.createCode( { statusItem: 0, code } )
   .then( () => {
+
+    const view = { code, user };
+    const output = mustache.render(contentEmail, view);
+
     transporter.sendMail({
       to: email,
       from: 'oscarin962010@hotmail.com',
       subject: 'Reset your password',
-      html:`<p>${code}</p>`
+      html: output
     })
   })
 }
