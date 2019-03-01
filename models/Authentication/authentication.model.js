@@ -3,6 +3,8 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const Auth = {};
 
+/*----------------------- GET --------------------------*/
+
 Auth.getUserByToken = ( req, res, cb ) => {
   let token = req.headers['authorization'];
   if ( typeof(token) === 'undefined' ) 
@@ -23,12 +25,25 @@ Auth.getUserByToken = ( req, res, cb ) => {
   })  
 }
 
+Auth.getWebsiteToken = ( res, cb ) => {
+  jwt.sign( {}, process.env.SECRET_KEY, { expiresIn: '30d' }, ( err, token ) => {
+    if ( err )
+      return cb( err, res )
+    else {          
+      return cb( null, res, {token}, 200 );
+    }
+  })     
+}
+
+
+/* --------------------------- POST ------------------------ */
+
 Auth.login = ( user, res, cb ) => {
   User.findOne( { where: { username: user.username } } )
   .then( async userInfo => {
     let matchPasswords = await bcrypt.compare( user.password, userInfo.password )
     if ( matchPasswords ) {
-      jwt.sign({userId: userInfo.id}, process.env.SECRET_KEY, { expiresIn: '30d' }, ( err, token ) => {
+      jwt.sign({userId: userInfo.id}, process.env.SECRET_KEY, { expiresIn: '1d' }, ( err, token ) => {
         if ( err )
           return cb( err, res )
         else {          
