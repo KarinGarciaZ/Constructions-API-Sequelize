@@ -17,6 +17,11 @@ router
   return Construction.getConstructionWidthImagesAndType( idConstruction, res, Construction.responseToClient );
 } )
 
+.get( '/numberOfConstructions/:num', (req, res) => {
+  let num = req.params.num;
+  return Construction.numberOfConstructions( num, res, Construction.responseToClient );
+})
+
 .get( '/', ( req, res ) => {
   return Construction.getAllConstructionsWithImagesAndType( res, Construction.responseToClient );
 } )
