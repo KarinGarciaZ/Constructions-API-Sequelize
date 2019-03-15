@@ -22,6 +22,12 @@ router
   return Construction.numberOfConstructions( num, res, Construction.responseToClient );
 })
 
+.get( '/getRelatedConstructions/:num&:type', (req, res) => {
+  let num = req.params.num;
+  let typeId = req.params.type;
+  return Construction.getRelatedConstructions( num, typeId, res, Construction.responseToClient );
+})
+
 .get( '/', ( req, res ) => {
   return Construction.getAllConstructionsWithImagesAndType( res, Construction.responseToClient );
 } )

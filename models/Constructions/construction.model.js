@@ -72,6 +72,23 @@ Construction.numberOfConstructions = ( num, res, cb ) => {
   .catch( error => cb( error, res ) )
 }
 
+Construction.getRelatedConstructions = ( num, typeId, res, cb ) => {
+  Construction.findAll({ 
+    include: [
+      { 
+        model: Image,
+        where: { statusItem: 0 } 
+      },
+      { model: Type  }
+    ],
+    limit: +num,
+    order: [ ['id', 'DESC'] ],
+    where: { statusItem: 0, typeId }
+  })
+  .then( data => cb(null, res, data, 200))
+  .catch( error => cb( error, res ) )
+}
+
 /*------------------------------POST--------------------------------*/
 
 Construction.saveConstructionWithImages = ( newConstruction, images, idType, res, cb ) => {
