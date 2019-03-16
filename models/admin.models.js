@@ -5,7 +5,7 @@ const sequelize = require('../db_config/mysql-connection');
 
 const Construction = sequelize.define('construction', {
   title: Sequelize.STRING,
-  description: Sequelize.STRING(10000),
+  description: Sequelize.STRING(2000),
   statusConstruction: Sequelize.STRING(20),
   address: Sequelize.STRING,
   city: Sequelize.STRING,
@@ -13,6 +13,12 @@ const Construction = sequelize.define('construction', {
   startDate: Sequelize.DATE,
   finishDate: Sequelize.DATE,
   statusItem: Sequelize.INTEGER
+})
+
+const Service = sequelize.define('service', {
+  name: Sequelize.STRING,
+  image: Sequelize.STRING,
+  description: Sequelize.STRING(2000)
 })
 
 const User = sequelize.define('user', {
