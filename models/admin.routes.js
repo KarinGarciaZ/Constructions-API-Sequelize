@@ -10,6 +10,7 @@ const Type = require('./Types/type.routes');
 const Construction = require('./Constructions/construction.routes');
 const Image = require('./Images/image.routes');
 const User = require('./Users/user.routes');
+const Mail = require('./Mails/mail.routes');
 
 router.use('/auth', Authentication)
 
@@ -22,6 +23,8 @@ router.use('/construction', isAuth, Construction);
 router.use('/image', userAuth, Image);
 
 router.use('/user', userAuth, User);
+
+router.use('/mail', Mail)
 
 
 
