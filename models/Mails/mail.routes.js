@@ -12,4 +12,10 @@ router.post('/sendMessage', ( req, res ) => {
   return Mail.sendMessage( email, name, subject, message, res, Mail.responseToClient );
 })
 
+router.post('/sendMail', ( req, res ) => {
+  let email = req.body.email;
+
+  return Mail.sendEmail( email, res, Mail.responseToClient );
+})
+
 module.exports = router;
