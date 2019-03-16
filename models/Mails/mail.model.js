@@ -1,13 +1,6 @@
+const transporter = require('./transporter-config');
+
 const Mail = {};
-
-const nodeMailer = require('nodemailer');
-const sendGridTransport = require('nodemailer-sendgrid-transport');
-
-const transporter = nodeMailer.createTransport(sendGridTransport({
-  auth: {
-    api_key: process.env.SEND_GRID
-  }
-}))
 
 Mail.sendMessage = ( email, name, subject, message, res, cb ) => {
   transporter.sendMail({

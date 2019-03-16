@@ -1,18 +1,13 @@
 const User = require('../admin.models').User;
 const Code = require('../admin.models').Code;
-const nodeMailer = require('nodemailer');
-const sendGridTransport = require('nodemailer-sendgrid-transport');
-const bcrypt = require('bcryptjs');
+const transporter = require('../Mails/transporter-config');
 
+const bcrypt = require('bcryptjs');
 const mustache   = require('mustache');
 const fs = require('fs');   
+
 const contentEmail = fs.readFileSync('models/ResetCode/email-reset-password.html',"utf-8");
 
-const transporter = nodeMailer.createTransport(sendGridTransport({
-  auth: {
-    api_key: process.env.SEND_GRID
-  }
-}))
 const ResetCode = {};
 
 ResetCode.sendEmail = ( email, res, cb ) => {
