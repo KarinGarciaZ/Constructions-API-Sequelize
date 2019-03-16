@@ -37,7 +37,7 @@ ResetCode.sendResetEmail = async ( email, user ) => {
 
     transporter.sendMail({
       to: email,
-      from: 'oscarin962010@hotmail.com',
+      from: process.env.EMAIL_SENDS_CODES,
       subject: 'Reset your password',
       html: output
     })

@@ -11,7 +11,7 @@ const transporter = nodeMailer.createTransport(sendGridTransport({
 
 Mail.sendMessage = ( email, name, subject, message, res, cb ) => {
   transporter.sendMail({
-    to: 'fujerixago@globaleuro.net',
+    to: process.env.EMAIL_GETS_MESSAGES,
     from: email,
     subject: subject,
     html: name + message
