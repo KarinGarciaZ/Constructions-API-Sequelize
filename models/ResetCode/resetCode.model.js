@@ -61,17 +61,6 @@ ResetCode.changePassword = async ( userId, newPassword ) => {
   User.update( {password: newPassEncrypted}, { where: {id: userId} } )    
 }
 
-ResetCode.sendMessage = ( email, name, subject, message, res, cb ) => {
-  transporter.sendMail({
-    to: 'tuzi@easyemail.info',
-    from: email,
-    subject: subject,
-    html: name + message
-  }).then( () => {
-    return cb( null, res, null, 204 )
-  })
-}
-
 ResetCode.responseToClient = ( error, res, data, status ) => {
   if ( error )
     res.status(500).json(error);
