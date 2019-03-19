@@ -18,7 +18,8 @@ const Construction = sequelize.define('construction', {
 const Service = sequelize.define('service', {
   name: Sequelize.STRING,
   image: Sequelize.STRING,
-  description: Sequelize.STRING(2000)
+  description: Sequelize.STRING(2000),
+  statusItem: Sequelize.INTEGER
 })
 
 const User = sequelize.define('user', {
@@ -74,4 +75,4 @@ sequelize.sync()
 .catch( error => console.log('ERROR CONNECTING TO THE DATABASE: --->', error))
 
 
-module.exports = { User, Type, Construction, Image, Code };
+module.exports = { User, Type, Construction, Image, Code, Service };
