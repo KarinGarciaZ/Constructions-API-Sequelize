@@ -3,13 +3,14 @@ const router = app.Router();
 
 const upload = require('./multer-configuration');
 const Service = require('./service.model');
+const userAuth = require('../../auth/userAuth');
 
 router
 .get('/', ( req, res ) => {
   return Service.getServices(res, Service.responseToClient);
 })
 
-.post('/', upload, ( req, res ) => {
+.post('/', userAuth, upload, ( req, res ) => {
 
   let serviceData = JSON.parse(req.body.serviceData);
 
