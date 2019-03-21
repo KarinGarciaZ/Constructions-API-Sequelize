@@ -34,6 +34,7 @@
   app.use(require('./default_values/user'));
 
   app.use(express.static('storage/constructions'));
+  app.use(express.static('storage/services'));
   
   const adminRoutes = require('./models/admin.routes');
   app.use( adminRoutes);
