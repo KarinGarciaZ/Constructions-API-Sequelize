@@ -18,7 +18,7 @@ const Construction = sequelize.define('construction', {
 const Service = sequelize.define('service', {
   name: Sequelize.STRING,
   image: Sequelize.STRING,
-  description: Sequelize.STRING(2000),
+  description: Sequelize.STRING(3000),
   statusItem: Sequelize.INTEGER
 })
 
