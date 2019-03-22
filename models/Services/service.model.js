@@ -17,7 +17,11 @@ Service.updateService = ( idService, updatedService, res, cb ) => {
 }
 
 Service.deleteService = ( idService, res, cb ) => {
-
+  Service.update( 
+    { statusItem: 1 }, 
+    { where: { id: idService } } )
+  .then( () => cb( null, res, {}, 204 ) )
+  .catch( error => cb( error, res ) )
 }
 
 Service.responseToClient = ( error, res, data, status ) => {

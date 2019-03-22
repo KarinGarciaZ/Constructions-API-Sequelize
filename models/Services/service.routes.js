@@ -24,12 +24,13 @@ router
   return Service.saveService( newService, res, Service.responseToClient )
 })
 
-.put('/:id', ( req, res ) => {
+.put('/', ( req, res ) => {
 
 })
 
 .delete('/:id', ( req, res ) => {
-
+  let idService = req.params.id;
+  Service.deleteService( idService, res, Service.responseToClient )
 })
 
 module.exports = router;
