@@ -6,6 +6,12 @@ Service.getServices = ( res, cb ) => {
   .catch( error => cb( error, res ) )
 }
 
+Service.getService = ( id, res, cb ) => {
+  Service.findById( id )
+  .then( service => cb( null, res, service, 200 ) )
+  .catch( error => cb( error, res ) )
+}
+
 Service.saveService = ( newService, res, cb ) => {
   Service.create( newService )
   .then( data => cb( null, res, data, 201 ) )
@@ -13,7 +19,9 @@ Service.saveService = ( newService, res, cb ) => {
 }
 
 Service.updateService = ( idService, updatedService, res, cb ) => {
-
+  Service.update( updatedService, { where: { id: idService } } )
+  .then( data => cb( null, res, data, 200 ) )
+  .catch( error => cb( error, res ) )
 }
 
 Service.deleteService = ( idService, res, cb ) => {

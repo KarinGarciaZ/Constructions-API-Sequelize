@@ -10,6 +10,11 @@ router
   return Service.getServices(res, Service.responseToClient);
 })
 
+.get('/:id', ( req, res ) => {
+  let id = req.params.id;
+  return Service.getService(id, res, Service.responseToClient);
+})
+
 .post('/', userAuth, upload, ( req, res ) => {
 
   let serviceData = JSON.parse(req.body.serviceData);
@@ -24,11 +29,23 @@ router
   return Service.saveService( newService, res, Service.responseToClient )
 })
 
-.put('/', ( req, res ) => {
+.put('/', userAuth, upload, ( req, res ) => {
+  let serviceData = JSON.parse(req.body.serviceData);
+  console.log(serviceData)
+  let id = serviceData.id;
+  
+  let serviceEdited = {
+    name: serviceData.name,
+    description: serviceData.description
+  }
 
+  if( req.file )
+    serviceEdited.image = req.file.filename
+
+  return Service.updateService( id, serviceEdited, res, Service.responseToClient )
 })
 
-.delete('/:id', ( req, res ) => {
+.delete('/:id', userAuth, ( req, res ) => {
   let idService = req.params.id;
   Service.deleteService( idService, res, Service.responseToClient )
 })
