@@ -8,7 +8,11 @@ Service.getServices = ( res, cb ) => {
 
 Service.getService = ( id, res, cb ) => {
   Service.findById( id )
-  .then( service => cb( null, res, service, 200 ) )
+  .then( service => {
+    if (service)
+      return cb( null, res, service, 200 )
+    return cb('Service does not exists', res)
+  } )
   .catch( error => cb( error, res ) )
 }
 
@@ -34,7 +38,7 @@ Service.deleteService = ( idService, res, cb ) => {
 
 Service.responseToClient = ( error, res, data, status ) => {
   if( error )
-    res.status(5000).json(error)
+    res.status(500).json(error)
   else
     res.status(status).json(data)
 }
