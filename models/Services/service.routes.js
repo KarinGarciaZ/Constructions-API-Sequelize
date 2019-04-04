@@ -6,6 +6,11 @@ const Service = require('./service.model');
 const userAuth = require('../../auth/userAuth');
 
 router
+
+.get('/getCounters', ( req, res ) => {
+  return Service.getCounters( res, Service.responseToClient )
+})
+
 .get('/', ( req, res ) => {
   return Service.getServices(res, Service.responseToClient);
 })

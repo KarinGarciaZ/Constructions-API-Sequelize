@@ -27,9 +27,7 @@ router.use('/image', userAuth, Image);
 
 router.use('/user', userAuth, User);
 
-router.use('/mail', Mail)
-
-
+router.use('/mail', Mail);
 
 router.use('/', ( req, res ) => {
   res.status(404).send();

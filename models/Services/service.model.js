@@ -1,4 +1,17 @@
 const Service = require('../admin.models').Service;
+const Construction = require('../admin.models').Construction;
+const Type = require('../admin.models').Type;
+
+Service.getCounters = ( res, cb ) => {
+  let promises = []
+  promises.push(Service.count( { where: { statusItem: 0 } } ));
+  promises.push(Construction.count( { where: { statusItem: 0 } } ));
+  promises.push(Type.count( { where: { statusItem: 0 } } ));
+
+  Promise.all( promises )
+  .then( data => cb( null, res, data, 200 ) )
+  .catch( err => cb( err, res ) )
+}
 
 Service.getServices = ( res, cb ) => {
   Service.findAll( { where: { statusItem: 0 } } )
