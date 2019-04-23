@@ -10,7 +10,7 @@
   app.use(bodyParser.json({limit: '50mb'}));
   
   app.use( ( req, res, next ) => {    
-    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Origin", "https://wizardly-snyder-a0a673.netlify.com");
     res.header("Access-Control-Allow-Credentials", "true");
     res.setHeader("Access-Control-Allow-Headers", "Authorization, Access-Control-Allow-Headers, Origin,X-Requested-With,Content-Type,Accept,content-type,application/json");
     res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS ")
