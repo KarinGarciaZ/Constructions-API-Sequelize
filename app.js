@@ -9,22 +9,22 @@
 
   app.use(bodyParser.json({limit: '50mb'}));
   
-  app.use( ( req, res, next ) => {    
-    res.setHeader("Access-Control-Allow-Origin", "https://wizardly-snyder-a0a673.netlify.com");
-    res.header("Access-Control-Allow-Credentials", "true");
-    res.setHeader("Access-Control-Allow-Headers", "Authorization, Access-Control-Allow-Headers, Origin,X-Requested-With,Content-Type,Accept,content-type,application/json");
-    res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS ")
+  // app.use( ( req, res, next ) => {    
+  //   res.setHeader("Access-Control-Allow-Origin", "https://wizardly-snyder-a0a673.netlify.com");
+  //   res.header("Access-Control-Allow-Credentials", "true");
+  //   res.setHeader("Access-Control-Allow-Headers", "Authorization, Access-Control-Allow-Headers, Origin,X-Requested-With,Content-Type,Accept,content-type,application/json");
+  //   res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS ")
     
-    if ('OPTIONS' == req.method) {
-        res.send(200);
-    } else {
-        next();
-    }
-  })
+  //   if ('OPTIONS' == req.method) {
+  //       res.send(200);
+  //   } else {
+  //       next();
+  //   }
+  // })
 
   //app.use( cors({ credentials: true, origin: true }) )
 
-  //app.use(cors( {credentials: true,  origin: '*', methods: 'GET, POST, PUT, DELETE, OPTIONS', allowedHeaders: 'Content-Type, Authorization'} ));
+  app.use(cors( {credentials: 'true',  origin: '*', methods: 'GET, POST, PUT, DELETE, OPTIONS', allowedHeaders: 'Authorization, Access-Control-Allow-Headers, Origin,X-Requested-With,Content-Type,Accept,content-type,application/json'} ));
 
   app.use(require('./default_values/user'));
 
