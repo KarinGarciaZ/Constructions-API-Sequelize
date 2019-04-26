@@ -5,26 +5,28 @@
   const bodyParser = require('body-parser');
   const cors = require('cors');
   const env = require('dotenv');
-  env.config();
+  const session = require('express-session');
 
-  app.use(bodyParser.json({limit: '50mb'}));
   
-  // app.use( ( req, res, next ) => {    
-  //   res.setHeader("Access-Control-Allow-Origin", "https://wizardly-snyder-a0a673.netlify.com");
-  //   res.header("Access-Control-Allow-Credentials", "true");
-  //   res.setHeader("Access-Control-Allow-Headers", "Authorization, Access-Control-Allow-Headers, Origin,X-Requested-With,Content-Type,Accept,content-type,application/json");
-  //   res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS ")
-    
-  //   if ('OPTIONS' == req.method) {
-  //       res.send(200);
-  //   } else {
-  //       next();
-  //   }
-  // })
 
-  //app.use( cors({ credentials: true, origin: true }) )
+  env.config();
+  app.use(bodyParser.json({limit: '50mb'}));
 
-  app.use(cors( {credentials: 'true',  origin: '*', methods: 'GET, POST, PUT, DELETE, OPTIONS', allowedHeaders: 'Authorization, Access-Control-Allow-Headers, Origin,X-Requested-With,Content-Type,Accept,content-type,application/json'} ));
+
+  
+  let sessionStore = require('./db_config/mysql-session');
+
+  app.use(session({
+    secret: 'session_cookie_secret',
+    store: sessionStore,
+    resave: false,
+    saveUninitialized: false
+  }));
+
+
+
+
+  app.use(cors( {origin:true, credentials: true} ));
 
   app.use(require('./default_values/user'));
 
