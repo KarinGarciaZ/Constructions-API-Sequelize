@@ -38,7 +38,7 @@ Auth.getWebsiteToken = ( res, cb ) => {
 
 /* --------------------------- POST ------------------------ */
 
-Auth.login = ( user, res, cb ) => {
+Auth.login = ( user, req, res, cb ) => {
   User.findOne( { where: { username: user.username } } )
   .then( async userInfo => {
     let matchPasswords = await bcrypt.compare( user.password, userInfo.password )
@@ -48,6 +48,9 @@ Auth.login = ( user, res, cb ) => {
           return cb( err, res )
         else {          
           let resp = { userInfo, token }
+          req.session.isLogged = true
+          req.session.jwt = token;
+          res.cookie('token', token, {any: 'property'});
           return cb( null, res, resp, 200 );
         }
       })      

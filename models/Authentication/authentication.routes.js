@@ -16,7 +16,7 @@ router.post('/login', (req, res) => {
     username: req.body.username,
     password: req.body.password
   }
-  return Auth.login( user, res, Auth.responseToClient )
+  return Auth.login( user, req, res, Auth.responseToClient )
 })
 
 module.exports = router;
