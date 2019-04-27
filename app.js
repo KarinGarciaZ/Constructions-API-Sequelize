@@ -5,32 +5,34 @@
   const bodyParser = require('body-parser');
   const cors = require('cors');
   const env = require('dotenv');
+  const formData = require('express-form-data')
+  const session = require('express-session');
   env.config();
 
-  app.use(bodyParser.json({limit: '50mb'}));
+  //this sets the db config to save sessions
+  let sessionStore = require('./db_config/mysql-session');
+
+  app.use(session({
+    secret: 'session_cookie_secret',
+    store: sessionStore,
+    resave: false,
+    saveUninitialized: false
+  }));
+
   
-  // app.use( ( req, res, next ) => {    
-  //   res.setHeader("Access-Control-Allow-Origin", "https://wizardly-snyder-a0a673.netlify.com");
-  //   res.header("Access-Control-Allow-Credentials", "true");
-  //   res.setHeader("Access-Control-Allow-Headers", "Authorization, Access-Control-Allow-Headers, Origin,X-Requested-With,Content-Type,Accept,content-type,application/json");
-  //   res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS ")
-    
-  //   if ('OPTIONS' == req.method) {
-  //       res.send(200);
-  //   } else {
-  //       next();
-  //   }
-  // })
+  app.use(bodyParser.json({limit: '50mb'}));
 
-  //app.use( cors({ credentials: true, origin: true }) )
+  app.use( cors({ credentials: true, origin: true }) )
 
-  app.use(cors( {credentials: 'true',  origin: '*', methods: 'GET, POST, PUT, DELETE, OPTIONS', allowedHeaders: 'Authorization, Access-Control-Allow-Headers, Origin,X-Requested-With,Content-Type,Accept,content-type,application/json'} ));
 
+  //this checks if there is a user in de db
   app.use(require('./default_values/user'));
 
+  //this allows to get images stored in the server
   app.use(express.static('storage/constructions'));
   app.use(express.static('storage/services'));
   
+  //this checks the enviroment of server
   const adminRoutes = require('./models/admin.routes');
   app.use( adminRoutes);
 
