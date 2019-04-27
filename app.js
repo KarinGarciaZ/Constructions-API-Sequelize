@@ -19,11 +19,15 @@
     saveUninitialized: false
   }));
 
+  app.use( (req, res, next) => {
+    console.log(req.headers)
+    next()
+  })
+
   
   app.use(bodyParser.json({limit: '50mb'}));
 
-  app.use( cors({ credentials: true, origin: true }) )
-  app.options('*', cors());
+  app.use( cors({ credentials: true, origin: 'https://nostalgic-hawking-41ba9e.netlify.com' }) )
 
 
   //this checks if there is a user in de db
