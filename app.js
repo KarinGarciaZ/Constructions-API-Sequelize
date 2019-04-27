@@ -6,36 +6,33 @@
   const cors = require('cors');
   const env = require('dotenv');
   const formData = require('express-form-data')
+  const session = require('express-session');
   env.config();
 
+  //this sets the db config to save sessions
+  let sessionStore = require('./db_config/mysql-session');
+
+  app.use(session({
+    secret: 'session_cookie_secret',
+    store: sessionStore,
+    resave: false,
+    saveUninitialized: false
+  }));
+
+  
   app.use(bodyParser.json({limit: '50mb'}));
 
-  // app.use( ( req, res, next ) => {
-  //   console.log(req.headers['authorization'])
-  //   res.setHeader('Access-Control-Allow-Origin', '*');
-  //   res.setHeader('Access-Control-Allow-Headers', 'Authorization, Content-Type');
-  //   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE')
-  //   next();
-  // })
+  app.use( cors({ credentials: true, origin: true }) )
 
-  // app.use( ( req, res, next ) => {
-  //   if ( req.method === 'OPTIONS' ) {
-  //     res.sendStatus(204);
-  //   }
-  //   next();
-  // })
 
-  //app.use( cors({ credentials: true, origin: true }) )
-
-  app.use(cors( {credentials: true,  origin: '*', methods: 'GET, POST, PUT, DELETE, OPTIONS', allowedHeaders: 'Content-Type, Authorization'} ));
-
-  //app.use(formData.parse());
-
+  //this checks if there is a user in de db
   app.use(require('./default_values/user'));
 
+  //this allows to get images stored in the server
   app.use(express.static('storage/constructions'));
   app.use(express.static('storage/services'));
   
+  //this checks the enviroment of server
   const adminRoutes = require('./models/admin.routes');
   app.use( adminRoutes);
 
