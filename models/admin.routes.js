@@ -15,7 +15,7 @@ const Mail = require('./Mails/mail.routes');
 
 router.use('/auth', Authentication)
 
-router.use('/reset', ResetCode)
+router.use('/reset', isAuth, ResetCode)
 
 router.use('/type', isAuth, Type);
 
@@ -27,7 +27,7 @@ router.use('/image', userAuth, Image);
 
 router.use('/user', userAuth, User);
 
-router.use('/mail', Mail);
+router.use('/mail', isAuth, Mail);
 
 router.use('/', ( req, res ) => {
   res.status(404).send();

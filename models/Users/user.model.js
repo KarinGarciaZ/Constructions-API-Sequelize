@@ -49,7 +49,7 @@ User.deleteUser = ( idUser, res, cb ) => {
 }
 
 User.getUserByToken = ( req, cb ) => {
-  let token = req.headers['authorization'];
+  let token = req.session.jwt;
   let bearer = token.split(' ');
   token = bearer[1];
 
