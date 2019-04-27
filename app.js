@@ -22,7 +22,8 @@
   
   app.use(bodyParser.json({limit: '50mb'}));
 
-  app.use()
+  app.use( cors({ credentials: true, origin: true }) )
+  app.options('*', cors());
 
 
   //this checks if there is a user in de db
