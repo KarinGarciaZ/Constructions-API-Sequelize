@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 
 module.exports = ( req, res, next ) => {
-  let token = req.headers['authorization'];
+  let token = req.session.jwt;
   if ( typeof(token) === 'undefined' ) 
     return res.status(403).json('You cannot hit this endpoint4.');
 
