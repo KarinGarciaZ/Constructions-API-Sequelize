@@ -6,7 +6,7 @@ const Auth = {};
 /*----------------------- GET --------------------------*/
 
 Auth.getUserByToken = ( req, res, cb ) => {
-  let token = req.headers['authorization'];
+  let token = req.session.jwt;
   if ( typeof(token) === 'undefined' ) 
     return cb( 'No credentials to get into system', res );
 
@@ -25,11 +25,12 @@ Auth.getUserByToken = ( req, res, cb ) => {
   })  
 }
 
-Auth.getWebsiteToken = ( res, cb ) => {
+Auth.getWebsiteToken = ( req, res, cb ) => {
   jwt.sign( {}, process.env.SECRET_KEY, { expiresIn: '30d' }, ( err, token ) => {
     if ( err )
       return cb( err, res )
-    else {          
+    else {
+      req.session.jwt = `Bearer ${token}`;
       return cb( null, res, {token}, 200 );
     }
   })     
@@ -43,14 +44,13 @@ Auth.login = ( user, req, res, cb ) => {
   .then( async userInfo => {
     let matchPasswords = await bcrypt.compare( user.password, userInfo.password )
     if ( matchPasswords ) {
-      jwt.sign({userId: userInfo.id}, process.env.SECRET_KEY, { expiresIn: '1d' }, ( err, token ) => {
+      jwt.sign({userId: userInfo.id}, process.env.SECRET_KEY, { expiresIn: '30d' }, ( err, token ) => {
         if ( err )
           return cb( err, res )
-        else {          
-          let resp = { userInfo, token }
-          req.session.isLogged = true
-          req.session.jwt = token;
-          res.cookie('token', token, {any: 'property'});
+        else {      
+          req.session.jwt = `Bearer ${token}`;
+          let isLogged = true;
+          let resp = { userInfo, isLogged }
           return cb( null, res, resp, 200 );
         }
       })      
@@ -58,6 +58,11 @@ Auth.login = ( user, req, res, cb ) => {
       cb( 'Passwords do not match', res );
   })
   .catch( error => cb( error, res ) )
+}
+
+Auth.logout = ( req, res, cb ) => {
+  req.session.destroy();
+  cb( null, res, null, 204 )
 }
 
 Auth.responseToClient = ( error, res, data, status ) => {

@@ -5,15 +5,11 @@
   const bodyParser = require('body-parser');
   const cors = require('cors');
   const env = require('dotenv');
+  const formData = require('express-form-data')
   const session = require('express-session');
-
-  
-
   env.config();
-  app.use(bodyParser.json({limit: '50mb'}));
 
-
-  
+  //this sets the db config to save sessions
   let sessionStore = require('./db_config/mysql-session');
 
   app.use(session({
@@ -23,16 +19,25 @@
     saveUninitialized: false
   }));
 
+  app.use( (req, res, next) => {
+    console.log(req.headers)
+    next()
+  })
+
+  
+  app.use(bodyParser.json({limit: '50mb'}));
+
+  app.use( cors({ credentials: true, origin: 'https://nostalgic-hawking-41ba9e.netlify.com' }) )
 
 
-
-  app.use(cors( {origin:true, credentials: true} ));
-
+  //this checks if there is a user in de db
   app.use(require('./default_values/user'));
 
+  //this allows to get images stored in the server
   app.use(express.static('storage/constructions'));
   app.use(express.static('storage/services'));
   
+  //this checks the enviroment of server
   const adminRoutes = require('./models/admin.routes');
   app.use( adminRoutes);
 
