@@ -27,8 +27,8 @@
   
   app.use(bodyParser.json({limit: '50mb'}));
 
-  app.use( cors({ credentials: true, origin: true, methods: 'GET, POST, PUT, DELETE, OPTIONS', allowedHeaders: 'Content-Type' }) )
-  //app.use( cors({ credentials: true, origin: true}) )
+  //app.use( cors({ credentials: true, origin: true, methods: 'GET, POST, PUT, DELETE, OPTIONS', allowedHeaders: 'Content-Type' }) )
+  app.use( cors({ credentials: true, origin: true}) )
 
 
   //this checks if there is a user in de db
