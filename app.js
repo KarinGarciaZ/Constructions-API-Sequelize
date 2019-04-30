@@ -27,7 +27,7 @@
   
   app.use(bodyParser.json({limit: '50mb'}));
 
-  app.use( cors({ credentials: true, origin: 'https://nostalgic-hawking-41ba9e.netlify.com' }) )
+  app.use( cors({ credentials: true, origin: true }) )
 
 
   //this checks if there is a user in de db
