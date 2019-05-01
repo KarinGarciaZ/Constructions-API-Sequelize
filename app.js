@@ -5,7 +5,6 @@
   const bodyParser = require('body-parser');
   const cors = require('cors');
   const env = require('dotenv');
-  const formData = require('express-form-data')
   const session = require('express-session');
   env.config();
 
