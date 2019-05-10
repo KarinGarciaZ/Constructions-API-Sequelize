@@ -106,7 +106,7 @@ Construction.saveConstructionWithImages = ( newConstruction, images, idType, res
 
 /*------------------------------PUT--------------------------------*/
 
-Construction.updateConstruction = ( idConstruction, constructionUpdated, images, res, cb ) => {
+Construction.updateConstruction = ( idConstruction, mainImage, constructionUpdated, images, res, cb ) => {
   Construction.update( constructionUpdated, { where: { id: idConstruction } } )
   .then( () => Construction.findByPk( idConstruction ))
   .then( construction => {
@@ -115,7 +115,10 @@ Construction.updateConstruction = ( idConstruction, constructionUpdated, images,
     }) 
     return Promise.all(imagesPromises);  
   } )  
-  .then( () => cb(null, res, 'updated', 201))
+  .then( () => {   
+    Image.updateMain( idConstruction, mainImage );
+    cb(null, res, 'updated', 201)
+  })
   .catch( error => cb( error, res ) )
 }
 
