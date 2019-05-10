@@ -1,7 +1,9 @@
 const app = require('express');
 const router = app.Router();
 
-const upload = require('./multer-configuration');
+const cloudinary = require('../../handlers/cloudinary')
+const upload = require('../../handlers/multer-configuration');
+
 const Service = require('./service.model');
 const userAuth = require('../../auth/userAuth');
 
@@ -20,13 +22,15 @@ router
   return Service.getService(id, res, Service.responseToClient);
 })
 
-.post('/', userAuth, upload, ( req, res ) => {
+.post('/', userAuth, upload.single('image'), async ( req, res ) => {
 
   let serviceData = JSON.parse(req.body.serviceData);
+  
+  let result = await cloudinary.v2.uploader.upload(req.file.path)
 
   let newService = {
     name: serviceData.name,
-    image: req.file.filename,
+    image: result.secure_url,
     description: serviceData.description,
     statusItem: 0
   }
@@ -34,9 +38,9 @@ router
   return Service.saveService( newService, res, Service.responseToClient )
 })
 
-.put('/', userAuth, upload, ( req, res ) => {
+.put('/', userAuth, upload.single('image'), async ( req, res ) => {
   let serviceData = JSON.parse(req.body.serviceData);
-  console.log(serviceData)
+
   let id = serviceData.id;
   
   let serviceEdited = {
@@ -44,8 +48,10 @@ router
     description: serviceData.description
   }
 
-  if( req.file )
-    serviceEdited.image = req.file.filename
+  if( req.file ) { 
+    let result = await cloudinary.v2.uploader.upload(req.file.path)
+    serviceEdited.image = result.secure_url
+  }
 
   return Service.updateService( id, serviceEdited, res, Service.responseToClient )
 })

@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
+const cloudinary = require('../../handlers/cloudinary')
 const Construction = require('./construction.model');
 const Image = require('../Images/image.model');
 const userAuth = require('../../auth/userAuth');
-const upload = require( './multer-configuration' );
+const upload = require('../../handlers/multer-configuration');
 
 router
 
@@ -32,7 +33,13 @@ router
   return Construction.getAllConstructionsWithImagesAndType( res, Construction.responseToClient );
 } )
 
-.post( '/', userAuth, upload, ( req, res ) => {
+.post( '/', userAuth, upload.array('image', 30), async ( req, res ) => {
+
+  let arrayImagesPromises = req.files.map( file => {
+    return cloudinary.v2.uploader.upload(file.path)
+  })
+
+  let response = await Promise.all( arrayImagesPromises)
 
   let constructionData = JSON.parse(req.body.constructionData);
 
@@ -54,14 +61,20 @@ router
     let mainImage = 0
     if (index === constructionData.mainImage)
       mainImage = 1
-    return { url: image.filename, mainImage, statusItem: 0 }
+    return { url: response[index].secure_url, mainImage, statusItem: 0 }
   })
 
   return Construction.saveConstructionWithImages( newConstruction, newImages, idType, res, Construction.responseToClient);
 
 })
 
-.put( '/:idConstruction', userAuth, upload, ( req, res ) => {
+.put( '/:idConstruction', userAuth, upload.array('image', 30), async ( req, res ) => {
+
+  let arrayImagesPromises = req.files.map( file => {
+    return cloudinary.v2.uploader.upload(file.path)
+  })
+
+  let response = await Promise.all( arrayImagesPromises)
 
   let constructionData = JSON.parse(req.body.constructionData);
 
@@ -81,11 +94,10 @@ router
   let mainImage = constructionData.mainImage
 
   let newImages = req.files.map( (image, index) => {
-    return { url: image.filename, mainImage: 0, statusItem: 0 }
+    return { url: response[index].secure_url, mainImage: 0, statusItem: 0 }
   })
 
-  Image.updateMain( idConstruction, mainImage )
-  return Construction.updateConstruction( idConstruction, constructionUpdated, newImages, res, Construction.responseToClient )
+  return Construction.updateConstruction( idConstruction, mainImage, constructionUpdated, newImages, res, Construction.responseToClient )
 })
 
 .delete( '/:idConstruction', userAuth, ( req, res ) => {
