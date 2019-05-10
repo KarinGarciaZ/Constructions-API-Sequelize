@@ -17,12 +17,6 @@
     resave: false,
     saveUninitialized: false
   }));
-
-  app.use( (req, res, next) => {
-    console.log(req.headers)
-    next()
-  })
-
   
   app.use(bodyParser.json({limit: '50mb'}));
 
