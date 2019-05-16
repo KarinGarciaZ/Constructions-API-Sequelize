@@ -1,6 +1,7 @@
 const Type = require('./../admin.models').Type;
 const Image = require('./../admin.models').Image;
 const Construction = require('./../admin.models').Construction;
+const Sequelize = require('sequelize');
 
 /*------------------------------GET--------------------------------*/
 
@@ -65,7 +66,7 @@ Construction.numberOfConstructions = ( num, res, cb ) => {
       { model: Type  }
     ],
     limit: +num,
-    order: [ ['id', 'DESC'] ],
+    order: Sequelize.literal('rand()'),
     where: { statusItem: 0 }
   })
   .then( data => cb(null, res, data, 200))
