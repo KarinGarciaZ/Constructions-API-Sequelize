@@ -49,6 +49,8 @@ Auth.login = ( user, req, res, cb ) => {
           return cb( err, res )
         else {      
           req.session.jwt = `Bearer ${token}`;
+          let hour = 3600000;
+          req.session.cookie.maxAge = 14 * 24 * hour;
           let isLogged = true;
           let resp = { userInfo, isLogged }
           return cb( null, res, resp, 200 );
