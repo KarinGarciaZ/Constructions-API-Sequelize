@@ -37,7 +37,7 @@
 
   const environmentConfig = require('./enviroments');
 
-  app.listen(environmentConfig.port, environmentConfig.host, () => {
+  app.listen(+environmentConfig.port, environmentConfig.host, () => {
     console.log(`API ready to get requests...`);
     console.log('running on port ' , environmentConfig.port);
   });
